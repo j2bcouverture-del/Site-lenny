@@ -645,7 +645,7 @@
 </head>
 
 <body>
-<!-- À PERSONNALISER ENSUITE : nom de l'entreprise, ville, téléphone, email, GA4, ntfy, SEO local -->
+<!-- FRC Couverture -->
 <header>
   <div class="trustBar" aria-label="Informations légales et contact">
     <div class="container trustBarInner">
@@ -1155,7 +1155,7 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 </script>
 
-<!-- NTFY : SUIVI À AJOUTER LORSQUE LE TOPIC / CODE DU CLIENT SERA FOURNI -->
+<!-- NTFY FRC : arrivée + appel + devis -->
 
 
 <div class="galleryLightbox" id="galleryLightbox" aria-hidden="true" role="dialog" aria-label="Photo agrandie">
@@ -1210,6 +1210,63 @@ document.addEventListener("DOMContentLoaded", function(){
   });
   document.addEventListener("keydown", function(e){
     if(e.key === "Escape" && lightbox.classList.contains("open")) closePhoto();
+  });
+})();
+</script>
+
+
+<script>
+(function(){
+  "use strict";
+
+  const NTFY_TOPIC = "frc-visites-K7m92Qp4X";
+  const NTFY_URL = "https://ntfy.sh/" + NTFY_TOPIC;
+
+  function envoyerNtfy(titre, message, tags){
+    fetch(NTFY_URL, {
+      method: "POST",
+      headers: {
+        "Title": titre,
+        "Tags": tags || "bell",
+        "Priority": "default"
+      },
+      body: message
+    }).catch(function(){});
+  }
+
+  function infosPage(){
+    return "Page : " + document.title +
+           "\nURL : " + window.location.href +
+           "\nHeure : " + new Date().toLocaleString("fr-FR");
+  }
+
+  // 1. Arrivée sur le site
+  envoyerNtfy(
+    "Nouveau visiteur - FRC Couverture",
+    "Un visiteur vient d'arriver sur le site.\n\n" + infosPage(),
+    "house"
+  );
+
+  // 2. Clic Appeler + 3. Clic Devis
+  document.addEventListener("click", function(e){
+    const appel = e.target.closest('a[href^="tel:"]');
+    if(appel){
+      envoyerNtfy(
+        "Clic Appeler - FRC Couverture",
+        "Un visiteur a cliqué sur un bouton Appeler.\nTéléphone : 07 88 13 80 77\n\n" + infosPage(),
+        "telephone"
+      );
+      return;
+    }
+
+    const devis = e.target.closest('a[href="#devis"]');
+    if(devis){
+      envoyerNtfy(
+        "Clic Devis - FRC Couverture",
+        "Un visiteur a cliqué sur un bouton Devis.\n\n" + infosPage(),
+        "memo"
+      );
+    }
   });
 })();
 </script>
