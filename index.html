@@ -427,6 +427,65 @@
       }
     }
 
+
+    /* Galerie interactive */
+    .gallery img{
+      cursor:zoom-in;
+      transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .gallery img:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 34px rgba(0,0,0,.16);
+    }
+    .galleryLightbox{
+      position:fixed;
+      inset:0;
+      z-index:5000;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background:rgba(3,10,20,.92);
+      backdrop-filter:blur(4px);
+    }
+    .galleryLightbox.open{display:flex}
+    .galleryLightbox img{
+      display:block;
+      max-width:min(1100px,94vw);
+      max-height:88vh;
+      width:auto;
+      height:auto;
+      object-fit:contain;
+      border-radius:16px;
+      box-shadow:0 24px 70px rgba(0,0,0,.45);
+      background:#fff;
+    }
+    .galleryLightboxClose{
+      position:absolute;
+      top:max(18px,env(safe-area-inset-top));
+      right:18px;
+      width:46px;
+      height:46px;
+      border:0;
+      border-radius:999px;
+      background:#fff;
+      color:#071426;
+      font-size:30px;
+      line-height:1;
+      cursor:pointer;
+      box-shadow:0 8px 30px rgba(0,0,0,.25);
+    }
+    .galleryLightboxCaption{
+      position:absolute;
+      left:20px;
+      right:20px;
+      bottom:max(18px,env(safe-area-inset-bottom));
+      color:#fff;
+      text-align:center;
+      font-weight:800;
+      text-shadow:0 2px 8px rgba(0,0,0,.55);
+    }
+
 </style>
 
   <script type="application/ld+json">
@@ -696,11 +755,11 @@
       <h2>Réalisations de toiture</h2>
       <p class="muted">Quelques chantiers réalisés par <strong>FRC Couverture</strong> à Nancy, Toul, Metz et dans les départements 54, 55, 57, 52 et 88.</p>
       <div class="gallery">
-        <img src="./Temp1.png?v=1" alt="Rénovation de toiture réalisée par FRC Couverture à Toul" loading="lazy">
-        <img src="./temp2.png?v=1" alt="Travaux de couverture en Meurthe-et-Moselle" loading="lazy">
-        <img src="./temp3.png?v=1" alt="Réparation de toiture par couvreur à Toul" loading="lazy">
-        <img src="./temp4.png?v=1" alt="Chantier de zinguerie FRC Couverture" loading="lazy">
-        <img src="./temp6.png?v=1" alt="Travaux de toiture autour de Nancy" loading="lazy">
+        <img src="./Temp1.png?v=2" alt="Rénovation de toiture réalisée par FRC Couverture à Toul" loading="lazy">
+        <img src="./temp2.png?v=2" alt="Travaux de couverture en Meurthe-et-Moselle" loading="lazy">
+        <img src="./temp3.png?v=2" alt="Réparation de toiture par couvreur à Toul" loading="lazy">
+        <img src="./temp4.png?v=2" alt="Chantier de zinguerie FRC Couverture" loading="lazy">
+        <img src="./temp6.png?v=2" alt="Travaux de toiture autour de Nancy" loading="lazy">
       </div>
     </div>
   </section>
@@ -1022,6 +1081,63 @@ document.addEventListener("DOMContentLoaded", function(){
 </script>
 
 <!-- NTFY : SUIVI À AJOUTER LORSQUE LE TOPIC / CODE DU CLIENT SERA FOURNI -->
+
+
+<div class="galleryLightbox" id="galleryLightbox" aria-hidden="true" role="dialog" aria-label="Photo agrandie">
+  <button class="galleryLightboxClose" id="galleryLightboxClose" type="button" aria-label="Fermer">×</button>
+  <img id="galleryLightboxImage" src="" alt="">
+  <div class="galleryLightboxCaption" id="galleryLightboxCaption"></div>
+</div>
+
+
+<script>
+(function(){
+  const gallery = document.querySelector("#realisations .gallery");
+  const lightbox = document.getElementById("galleryLightbox");
+  const lightboxImage = document.getElementById("galleryLightboxImage");
+  const lightboxCaption = document.getElementById("galleryLightboxCaption");
+  const closeBtn = document.getElementById("galleryLightboxClose");
+
+  if(!gallery || !lightbox || !lightboxImage || !closeBtn) return;
+
+  function openPhoto(img){
+    lightboxImage.src = img.currentSrc || img.src;
+    lightboxImage.alt = img.alt || "Réalisation FRC Couverture";
+    lightboxCaption.textContent = img.alt || "";
+    lightbox.classList.add("open");
+    lightbox.setAttribute("aria-hidden","false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closePhoto(){
+    lightbox.classList.remove("open");
+    lightbox.setAttribute("aria-hidden","true");
+    lightboxImage.src = "";
+    document.body.style.overflow = "";
+  }
+
+  gallery.querySelectorAll("img").forEach(function(img){
+    img.setAttribute("tabindex","0");
+    img.setAttribute("role","button");
+    img.setAttribute("aria-label","Agrandir : " + (img.alt || "photo"));
+    img.addEventListener("click", function(){ openPhoto(img); });
+    img.addEventListener("keydown", function(e){
+      if(e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        openPhoto(img);
+      }
+    });
+  });
+
+  closeBtn.addEventListener("click", closePhoto);
+  lightbox.addEventListener("click", function(e){
+    if(e.target === lightbox) closePhoto();
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape" && lightbox.classList.contains("open")) closePhoto();
+  });
+})();
+</script>
 
 </body>
 </html>
