@@ -522,6 +522,39 @@
       }
     }
 
+
+    /* ===== GALERIE FRC - VERSION FINALE ===== */
+    #realisations .gallery{
+      display:grid !important;
+      grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+      gap:14px !important;
+      margin-top:22px !important;
+    }
+    #realisations .gallery img{
+      display:block !important;
+      width:100% !important;
+      height:240px !important;
+      object-fit:cover !important;
+      object-position:center !important;
+      border-radius:16px !important;
+      background:#edf2f7 !important;
+      cursor:zoom-in !important;
+      box-shadow:0 8px 24px rgba(0,0,0,.10) !important;
+    }
+    @media (max-width:800px){
+      #realisations .gallery{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+      #realisations .gallery img{height:190px !important;}
+    }
+    @media (max-width:520px){
+      #realisations .gallery{grid-template-columns:1fr !important;}
+      #realisations .gallery img{
+        width:100% !important;
+        height:auto !important;
+        aspect-ratio:4/3 !important;
+        object-fit:cover !important;
+      }
+    }
+
 </style>
 
   <script type="application/ld+json">
@@ -791,15 +824,17 @@
       <h2>Réalisations de toiture</h2>
       <p class="muted">Quelques chantiers réalisés par <strong>FRC Couverture</strong> à Nancy, Toul, Metz et dans les départements 54, 55, 57, 52 et 88.</p>
       
+    
     <div class="gallery">
       <img src="Temp1.png" alt="Réalisation toiture FRC Couverture 1" loading="lazy" decoding="async">
       <img src="temp2.png" alt="Réalisation toiture FRC Couverture 2" loading="lazy" decoding="async">
       <img src="temp3.png" alt="Réalisation toiture FRC Couverture 3" loading="lazy" decoding="async">
       <img src="temp4.png" alt="Réalisation toiture FRC Couverture 4" loading="lazy" decoding="async">
       <img src="temp6.png" alt="Réalisation toiture FRC Couverture 5" loading="lazy" decoding="async">
-      <img src="temp7.png" alt="Réalisation toiture FRC Couverture 6" loading="lazy" decoding="async">
-      <img src="Temp8.png" alt="Réalisation toiture FRC Couverture 7" loading="lazy" decoding="async">
+      <img src="temp7.png" alt="Réalisation zinguerie et gouttière FRC Couverture 6" loading="lazy" decoding="async">
+      <img src="Temp8.png" alt="Réalisation zinguerie autour de cheminée FRC Couverture 7" loading="lazy" decoding="async">
     </div>
+
 
     </div>
   </section>
